@@ -15,11 +15,11 @@ import static org.junit.Assert.*;
  *
  * @author Soltys
  */
-public class SudokuStateTests
+public class SudokuStateTest
 {
     SudokuState sudokuState;
 
-    public SudokuStateTests()
+    public SudokuStateTest()
     {
     }
 

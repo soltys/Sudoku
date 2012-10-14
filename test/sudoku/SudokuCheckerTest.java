@@ -15,10 +15,10 @@ import static org.junit.Assert.*;
  *
  * @author Soltys
  */
-public class SudokuCheckerTests
+public class SudokuCheckerTest
 {
 
-    public SudokuCheckerTests()
+    public SudokuCheckerTest()
     {
     }
 
