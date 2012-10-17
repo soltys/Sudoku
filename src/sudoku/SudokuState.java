@@ -12,7 +12,7 @@ public class SudokuState extends StateImpl
 
     private final int n;
     private final int n2;
-    private final byte[][] board;
+    private byte[][] board;
     private final SudokuPrinter printer;
 
     public SudokuState(int n, State parent)
@@ -49,16 +49,20 @@ public class SudokuState extends StateImpl
         return board[row][column];
     }
 
-    public byte[][] parseSudoku(String sudokuData)
+    public byte[][] getBoard()
+    {
+        return board;
+    }
+
+    public void loadSudokuFromString(String sudokuData)
     {
         if (sudokuData == null)
         {
             throw new NullPointerException();
         }
-        if (sudokuData.isEmpty())
-        {
-            throw new IllegalArgumentException("String is empty");
-        }
+
+        board = new byte[n2][n2];
+
         int row = 0;
         int column = 0;
         for (String token : sudokuData.split(","))
@@ -81,7 +85,7 @@ public class SudokuState extends StateImpl
                 row++;
             }
         }
-        return board;
+
     }
 
     @Override
@@ -99,6 +103,18 @@ public class SudokuState extends StateImpl
     @Override
     public String getHashCode()
     {
-        return "";
+        return printer.printSudoku(board);
+    }
+
+    @Override
+    public boolean isSolution()
+    {
+        return SudokuChecker.isSolution(board);
+    }
+
+    @Override
+    public boolean isValid()
+    {
+        return SudokuChecker.isValid(board);
     }
 }

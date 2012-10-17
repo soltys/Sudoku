@@ -213,5 +213,6 @@ public abstract class StateImpl implements State {
 	 */
 	public  abstract String getHashCode() ;
 
+        public abstract boolean isValid();
 
 }

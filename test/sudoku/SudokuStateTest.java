@@ -50,15 +50,27 @@ public class SudokuStateTest
     // @Test
     // public void hello() {}
 
-    @Test(expected=IllegalArgumentException.class)
-    public void if_sudoku_string_is_empty_throw_illeagalArgumentException()
+    @Test
+    public void if_sudoku_string_is_empty_all_numbers_are_equals_zero()
     {
-        sudokuState.parseSudoku("");
+        sudokuState.loadSudokuFromString("");
+
+        byte[][] board = sudokuState.getBoard();
+        for (int row = 0; row < board.length; row++)
+        {
+            for (int column = 0; column < board.length; column++)
+            {
+                assertEquals(0, board[row][column]);
+            }
+        }
     }
 
     @Test(expected=NullPointerException.class)
     public void if_sudoku_string_is_null_throw_PointerNullException()
     {
-        sudokuState.parseSudoku(null);
+        sudokuState.loadSudokuFromString(null);
     }
+
+
+
 }

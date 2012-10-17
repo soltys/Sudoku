@@ -14,24 +14,25 @@ import klesk.math.search.State;
 public class SudokuSolver extends AStarSearcher
 {
 
-    public SudokuSolver(State aInitialState,
-                        boolean aIsStopAfterFirstSolution,
-                        boolean aIsStopAfterSecondSolution)
+    public SudokuSolver(State initialState,
+                        boolean isStopAfterFirstSolution,
+                        boolean isStopAfterSecondSolution)
     {
-        super(aInitialState,
-              aIsStopAfterFirstSolution,
-              aIsStopAfterSecondSolution);
+        super(initialState,
+              isStopAfterFirstSolution,
+              isStopAfterSecondSolution);
     }
 
 
     @Override
-    public boolean isSolution(State aState)
+    public boolean isSolution(State state)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return state.isSolution();
+
     }
 
     @Override
-    public void buildChildren(State aParent)
+    public void buildChildren(State parent)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
