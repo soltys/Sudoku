@@ -10,6 +10,7 @@ import klesk.math.search.StateImpl;
 public class SudokuState extends StateImpl {
 
     private final int n;
+
     private final int n2;
     private byte[][] board;
     private final SudokuPrinter printer;
@@ -22,8 +23,34 @@ public class SudokuState extends StateImpl {
         printer = new SudokuPrinter(board.length);
     }
 
+    public SudokuState(State parent) {
+        super(parent);
+        SudokuState sudokuState = (SudokuState) parent;
+        this.n = sudokuState.getN();
+        this.n2 = sudokuState.getN2();
+        board = new byte[n2][n2];
+        byte[][] parentSudoku = sudokuState.getBoard();
+        for (int row = 0; row < board.length; row++) {
+            for (int column = 0; column < board.length; column++) {
+                board[row][column] = parentSudoku[row][column];
+            }
+        }
+
+        printer = new SudokuPrinter(board.length);
+    }
+    
+    public int getN() {
+        return n;
+    }
+
+    public int getN2() {
+        return n2;
+    }
+
     /**
      * Sets value of row and column in Sudoku board
+     *
+     * @param row
      */
     public void setNumber(int row, int column, byte value) {
         try {
@@ -47,7 +74,22 @@ public class SudokuState extends StateImpl {
         return board;
     }
 
+    /**
+     * Loads Sudoku from string, values should be separated by ','
+     *
+     * @param sudokuData numbers in one line separated by ','
+     */
     public void loadSudokuFromString(String sudokuData) {
+        loadSudokuFromString(sudokuData, ",");
+    }
+
+    /**
+     * Loads Sudoku from string
+     *
+     * @param sudokuData
+     * @param separator
+     */
+    public void loadSudokuFromString(String sudokuData, String separator) {
         if (sudokuData == null) {
             throw new NullPointerException();
         }
@@ -56,12 +98,12 @@ public class SudokuState extends StateImpl {
 
         int row = 0;
         int column = 0;
-        for (String token : sudokuData.split(",")) {
+        for (String token : sudokuData.split(separator)) {
             byte value = 0;
             try {
                 value = Byte.parseByte(token);
             } catch (NumberFormatException e) {
-                //ingnoring
+                //ignoring
             }
 
             setNumber(row, column, value);
@@ -72,7 +114,7 @@ public class SudokuState extends StateImpl {
                 row++;
             }
         }
-
+        computeHeuristicGrade();
     }
 
     @Override
@@ -82,7 +124,16 @@ public class SudokuState extends StateImpl {
 
     @Override
     public double computeHeuristicGrade() {
-        return 0;
+        int counter = 0;
+        for (int row = 0; row < board.length; row++) {
+            for (int column = 0; column < board.length; column++) {
+                if (board[row][column] == 0) {
+                    counter++;
+                }
+            }
+        }
+        setH(counter);
+        return counter;
     }
 
     @Override
@@ -91,12 +142,17 @@ public class SudokuState extends StateImpl {
     }
 
     @Override
-    public boolean isSolution() {
-        return SudokuChecker.isSolution(board);
+    public boolean isSolved() {
+        return SudokuChecker.isValid(board) && getH() == 0;
     }
 
     @Override
     public boolean isValid() {
+        return SudokuChecker.isValid(board);
+    }
+
+    @Override
+    public boolean isAdmissible() {
         return SudokuChecker.isValid(board);
     }
 }

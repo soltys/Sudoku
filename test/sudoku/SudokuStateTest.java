@@ -69,7 +69,7 @@ public class SudokuStateTest
     public void if_sudoku_string_is_null_throw_PointerNullException()
     {
         sudokuState.loadSudokuFromString(null);
-    }
+    }  
 
 
 

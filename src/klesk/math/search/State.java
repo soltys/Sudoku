@@ -155,5 +155,5 @@ public interface State extends Comparable {
 	 */
 	public void setDepth(double aDepth);
 
-        public boolean isSolution();
+        public boolean isSolved();
 }
