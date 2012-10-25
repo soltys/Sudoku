@@ -7,16 +7,14 @@ import klesk.math.search.StateImpl;
  *
  * @author Soltys
  */
-public class SudokuState extends StateImpl
-{
+public class SudokuState extends StateImpl {
 
     private final int n;
     private final int n2;
     private byte[][] board;
     private final SudokuPrinter printer;
 
-    public SudokuState(int n, State parent)
-    {
+    public SudokuState(int n, State parent) {
         super(parent);
         this.n = n;
         this.n2 = n * n;
@@ -27,13 +25,10 @@ public class SudokuState extends StateImpl
     /**
      * Sets value of row and column in Sudoku board
      */
-    public void setNumber(int row, int column, byte value)
-    {
-        try
-        {
+    public void setNumber(int row, int column, byte value) {
+        try {
             board[row][column] = value;
-        } catch (ArrayIndexOutOfBoundsException e)
-        {
+        } catch (ArrayIndexOutOfBoundsException e) {
             System.err.println("row " + row + " column " + column + " value " + value);
             throw e;
         }
@@ -44,20 +39,16 @@ public class SudokuState extends StateImpl
      *
      * @return byte which is in range of 0-n^2
      */
-    public byte getNumber(int row, int column)
-    {
+    public byte getNumber(int row, int column) {
         return board[row][column];
     }
 
-    public byte[][] getBoard()
-    {
+    public byte[][] getBoard() {
         return board;
     }
 
-    public void loadSudokuFromString(String sudokuData)
-    {
-        if (sudokuData == null)
-        {
+    public void loadSudokuFromString(String sudokuData) {
+        if (sudokuData == null) {
             throw new NullPointerException();
         }
 
@@ -65,22 +56,18 @@ public class SudokuState extends StateImpl
 
         int row = 0;
         int column = 0;
-        for (String token : sudokuData.split(","))
-        {
+        for (String token : sudokuData.split(",")) {
             byte value = 0;
-            try
-            {
+            try {
                 value = Byte.parseByte(token);
-            } catch (NumberFormatException e)
-            {
+            } catch (NumberFormatException e) {
                 //ingnoring
             }
 
             setNumber(row, column, value);
 
             column++;
-            if (column == board.length)
-            {
+            if (column == board.length) {
                 column = 0;
                 row++;
             }
@@ -89,32 +76,27 @@ public class SudokuState extends StateImpl
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return printer.printSudoku(board);
     }
 
     @Override
-    public double computeHeuristicGrade()
-    {
+    public double computeHeuristicGrade() {
         return 0;
     }
 
     @Override
-    public String getHashCode()
-    {
+    public String getHashCode() {
         return printer.printSudoku(board);
     }
 
     @Override
-    public boolean isSolution()
-    {
+    public boolean isSolution() {
         return SudokuChecker.isSolution(board);
     }
 
     @Override
-    public boolean isValid()
-    {
+    public boolean isValid() {
         return SudokuChecker.isValid(board);
     }
 }
